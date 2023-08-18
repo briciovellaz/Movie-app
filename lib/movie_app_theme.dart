@@ -46,6 +46,5 @@ ThemeData movieAppData() {
       backgroundColor: Colors.red,
       iconSize: 30,
     ),
-    //theme for the entire app
   );
 }

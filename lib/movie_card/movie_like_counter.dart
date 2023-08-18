@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 
 class LikeCounter extends StatelessWidget {
-  int counter;
+  final int counter;
+  final int limit;
+  static const double iconSize = 50;
 
-  LikeCounter({
+  const LikeCounter({
     super.key,
     required this.counter,
+    this.limit = 99,
   });
 
   @override
   Widget build(BuildContext context) {
+    final String iconShowLimit = '$limit+';
     return Stack(
       alignment: Alignment.center,
       children: [
         Icon(
           Icons.favorite,
           color: Theme.of(context).colorScheme.primary,
-          size: 50,
+          size: iconSize,
         ),
         Text(
-          (counter <= 99) ? counter.toString() : '99+',
+          (counter <= limit) ? counter.toString() : iconShowLimit,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onPrimary,
           ),

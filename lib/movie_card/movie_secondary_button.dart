@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 
 class SecondaryButton extends StatelessWidget {
   final IconData icon;
-
-  //final VoidCallback onPressed;
+  final double radius;
 
   const SecondaryButton({
     super.key,
     required this.icon,
-  }); //add onpressed action
+    this.radius = 25,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          25,
-        ),
+        borderRadius: BorderRadius.circular(radius),
         border: Border.all(
           color: Theme.of(context).colorScheme.secondary,
         ),

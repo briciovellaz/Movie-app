@@ -1,6 +1,6 @@
 import 'package:bricio_vellaz/movie.dart';
-import 'package:bricio_vellaz/movie_card.dart';
 import 'package:flutter/widgets.dart';
+import 'movie_card/movie_card.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

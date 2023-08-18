@@ -2,7 +2,8 @@ part of 'movie_actions.dart';
 
 class _PlayTrailerButton extends StatelessWidget {
   const _PlayTrailerButton();
-  static const String buttonText='Play trailer';
+
+  static const String buttonText = 'Play trailer';
 
   @override
   Widget build(BuildContext context) {

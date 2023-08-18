@@ -19,7 +19,7 @@ class MovieActions extends StatelessWidget {
   static const int mainActionFlex = 3;
   static const double mainActionPadding = 10;
   static const double avgVotesFontSize = 12;
-  static const String averageRatingPrefix='Avg. vote: ';
+  static const String averageRatingPrefix = 'Avg. vote: ';
 
   @override
   Widget build(BuildContext context) {

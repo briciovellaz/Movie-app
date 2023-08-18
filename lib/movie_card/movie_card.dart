@@ -1,14 +1,17 @@
-import 'package:bricio_vellaz/movie_card/movie_overview.dart';
 import 'package:flutter/material.dart';
 import '../movie.dart';
 import 'genres_list.dart';
 import 'movie_actions.dart';
 import 'movie_header.dart';
+import 'movie_overview.dart';
 
 class MovieCard extends StatefulWidget {
   final Movie movie;
 
-  const MovieCard({super.key, required this.movie});
+  const MovieCard({
+    super.key,
+    required this.movie,
+  });
 
   @override
   State<MovieCard> createState() => _MovieCardState();

@@ -42,11 +42,16 @@ class _MovieCardState extends State<MovieCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image(
-                  image:
-                      AssetImage('assets/images/${widget.movie.backdrop}.jpg'),
+                  image: AssetImage(
+                    'assets/images/${widget.movie.backdrop}.jpg',
+                  ),
                 ),
                 Container(
-                  padding: const EdgeInsets.only(top: 15, left: 10, right: 10),
+                  padding: const EdgeInsets.only(
+                    top: 15,
+                    left: 10,
+                    right: 10,
+                  ),
                   alignment: Alignment.center,
                   child: Column(
                     children: [
@@ -130,10 +135,10 @@ class _MovieCardState extends State<MovieCard> {
                           ),
                           Text(
                             'Avg. vote: ${widget.movie.voteAverage}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall!
-                                .copyWith(fontSize: 12),
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontSize: 12,
+                                    ),
                           ),
                         ],
                       ),
@@ -141,8 +146,10 @@ class _MovieCardState extends State<MovieCard> {
                   ],
                 ), // list, save and star buttons, like-counter
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                    horizontal: 10,
+                  ),
                   child: Row(
                     //genres
                     children: [
@@ -158,32 +165,39 @@ class _MovieCardState extends State<MovieCard> {
                         child: SizedBox(
                           height: 25,
                           child: ListView.builder(
-                              itemCount: widget.movie.genres.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 3),
-                                  child: OutlinedButton(
-                                    onPressed: () {},
-                                    style: OutlinedButton.styleFrom(
-                                      side: BorderSide(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(18),
-                                      ),
+                            itemCount: widget.movie.genres.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (
+                              BuildContext context,
+                              int index,
+                            ) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 3,
+                                ),
+                                child: OutlinedButton(
+                                  onPressed: () {},
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                     ),
-                                    child: Text(
-                                      widget.movie.genres[index],
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        18,
+                                      ),
                                     ),
                                   ),
-                                );
-                              }),
+                                  child: Text(
+                                    widget.movie.genres[index],
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -201,7 +215,9 @@ class _MovieCardState extends State<MovieCard> {
                   flex: 3,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
+                      vertical: 10,
+                      horizontal: 20,
+                    ),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Text(

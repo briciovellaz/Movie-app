@@ -58,10 +58,6 @@ class MyApp extends StatelessWidget {
       ),
       home: const Scaffold(
         body: SafeArea(
-          top: true,
-          bottom: true,
-          left: true,
-          right: true,
           child: Home(),
         ),
       ),

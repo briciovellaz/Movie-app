@@ -5,12 +5,18 @@ class SecondaryButton extends StatelessWidget {
 
   //final VoidCallback onPressed;
 
-  const SecondaryButton({super.key, required this.icon}); //add onpressed action
+  const SecondaryButton({
+    super.key,
+    required this.icon,
+  }); //add onpressed action
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(
+          25,
+        ),
         border: Border.all(
           color: Theme.of(context).colorScheme.secondary,
         ),

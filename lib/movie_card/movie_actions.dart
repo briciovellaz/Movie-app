@@ -3,8 +3,14 @@ import '../movie.dart';
 import 'movie_like_counter.dart';
 import 'movie_secondary_button.dart';
 
+part 'movie_actions_play.dart';
+
 class MovieActions extends StatelessWidget {
-  const MovieActions({super.key, required this.movie, required this.counter});
+  const MovieActions({
+    super.key,
+    required this.movie,
+    required this.counter,
+  });
 
   final Movie movie;
   final int counter;
@@ -13,10 +19,11 @@ class MovieActions extends StatelessWidget {
   static const int mainActionFlex = 3;
   static const double mainActionPadding = 10;
   static const double avgVotesFontSize = 12;
+  static const String averageRatingPrefix='Avg. vote: ';
 
   @override
   Widget build(BuildContext context) {
-    final String averageRating = 'Avg. vote: ${movie.voteAverage}';
+    final String averageRating = movie.voteAverage;
     return Column(
       children: [
         Row(
@@ -68,7 +75,7 @@ class MovieActions extends StatelessWidget {
                     counter: counter,
                   ),
                   Text(
-                    averageRating,
+                    '$averageRatingPrefix$averageRating',
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -80,30 +87,6 @@ class MovieActions extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class _PlayTrailerButton extends StatelessWidget {
-  const _PlayTrailerButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: () {
-        //Play trailer
-      },
-      style: OutlinedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      icon: Icon(
-        Icons.play_arrow,
-        color: Theme.of(context).colorScheme.onPrimary,
-      ),
-      label: Text(
-        'Play Trailer',
-        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-      ),
     );
   }
 }

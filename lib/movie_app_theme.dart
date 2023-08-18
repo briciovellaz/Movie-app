@@ -3,6 +3,14 @@ import 'package:flutter/material.dart';
 ThemeData movieAppData() {
   const Color mainColor=Colors.white;
   const Color secondaryColor=Colors.white70;
+  const Color floatingButtonBgColor=Colors.red;
+  const double titleBigFontSize=25;
+  const double titleMediumFontSize=20;
+  const double titleSmallFontSize=17;
+  const double bodyMediumFontSize=17;
+  const double bodySmallFontSize=15;
+  const double floatingButtonIconSize=30;
+
   return ThemeData(
     colorScheme: const ColorScheme(
       primary: Colors.red,
@@ -22,29 +30,29 @@ ThemeData movieAppData() {
     textTheme: const TextTheme(
       titleLarge: TextStyle(
         color: mainColor,
-        fontSize: 25,
+        fontSize: titleBigFontSize,
       ),
       titleMedium: TextStyle(
         color: secondaryColor,
-        fontSize: 20,
+        fontSize: titleMediumFontSize,
       ),
       titleSmall: TextStyle(
         color: secondaryColor,
-        fontSize: 17,
+        fontSize: titleSmallFontSize,
       ),
       bodyMedium: TextStyle(
         color: secondaryColor,
-        fontSize: 17,
+        fontSize: bodyMediumFontSize,
       ),
       bodySmall: TextStyle(
         color: secondaryColor,
-        fontSize: 15,
+        fontSize: bodySmallFontSize,
       ),
     ),
     primaryColor: mainColor,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: Colors.red,
-      iconSize: 30,
+      backgroundColor: floatingButtonBgColor,
+      iconSize: floatingButtonIconSize,
     ),
   );
 }

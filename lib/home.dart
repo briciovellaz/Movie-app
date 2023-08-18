@@ -8,7 +8,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MovieCard(
-      movie: Movie.marioExample(),
+      movie: Movie.mockMovie(),
     );
   }
 }

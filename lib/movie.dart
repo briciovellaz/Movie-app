@@ -26,7 +26,7 @@ class Movie {
       1,
       'The Super Mario Bros. Movie',
       'The Super Mario Bros. Movie',
-      ['Animation', 'Family', 'Adventure', 'Fantasy', 'Comedy'],
+      ['Animation', 'Family', 'Adventure', 'Fantasy', 'Comedy',],
       'mario_poster',
       'mario_backdrop',
       '2023-04-05',

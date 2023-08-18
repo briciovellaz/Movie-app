@@ -19,9 +19,11 @@ class _MovieCardState extends State<MovieCard> {
   static const double appBarElevation = 0;
 
   void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+    setState(
+      () {
+        _counter++;
+      },
+    );
   }
 
   @override

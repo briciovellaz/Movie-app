@@ -1,7 +1,8 @@
-part of 'genres_list.dart';
+import 'package:flutter/material.dart';
 
-class _GenreListItem extends StatelessWidget {
-  const _GenreListItem({
+class GenreListItem extends StatelessWidget {
+  const GenreListItem({
+    super.key,
     required this.genre,
   });
 

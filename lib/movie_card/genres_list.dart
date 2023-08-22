@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-part 'genres_list_item.dart';
+import 'genres_list_item.dart';
 
 class GenresList extends StatelessWidget {
   static const String title = 'Genres';
@@ -43,7 +43,7 @@ class GenresList extends StatelessWidget {
                   BuildContext context,
                   int index,
                 ) {
-                  return _GenreListItem(
+                  return GenreListItem(
                     genre: genresList[index],
                   );
                 },

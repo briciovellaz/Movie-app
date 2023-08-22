@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 ThemeData movieAppData() {
-  const Color mainColor=Colors.white;
-  const Color secondaryColor=Colors.white70;
-  const Color floatingButtonBgColor=Colors.red;
-  const double titleBigFontSize=25;
-  const double titleMediumFontSize=20;
-  const double titleSmallFontSize=17;
-  const double bodyMediumFontSize=17;
-  const double bodySmallFontSize=15;
-  const double floatingButtonIconSize=30;
+  const Color mainColor = Colors.white;
+  const Color secondaryColor = Colors.white70;
+  const Color floatingButtonBgColor = Colors.red;
+  const double titleBigFontSize = 25;
+  const double titleMediumFontSize = 20;
+  const double titleSmallFontSize = 17;
+  const double bodyMediumFontSize = 17;
+  const double bodySmallFontSize = 15;
+  const double floatingButtonIconSize = 30;
 
   return ThemeData(
     colorScheme: const ColorScheme(

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import '../movie.dart';
+import 'movie_actions_play.dart';
 import 'movie_like_counter.dart';
 import 'movie_secondary_button.dart';
-
-part 'movie_actions_play.dart';
 
 class MovieActions extends StatelessWidget {
   const MovieActions({
@@ -32,7 +31,7 @@ class MovieActions extends StatelessWidget {
               flex: mainActionFlex,
               child: Padding(
                 padding: EdgeInsets.all(mainActionPadding),
-                child: _PlayTrailerButton(),
+                child: PlayTrailerButton(),
               ),
             ),
             Expanded(

@@ -1,7 +1,7 @@
-part of 'movie_actions.dart';
+import 'package:flutter/material.dart';
 
-class _PlayTrailerButton extends StatelessWidget {
-  const _PlayTrailerButton();
+class PlayTrailerButton extends StatelessWidget {
+  const PlayTrailerButton({super.key});
 
   static const String buttonText = 'Play trailer';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../movie.dart';
-import 'movie_actions_play.dart';
+import 'movie_play_trailer_button.dart';
 import 'movie_like_counter.dart';
 import 'movie_secondary_button.dart';
 

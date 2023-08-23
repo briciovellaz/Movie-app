@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+
+import '../cached_image.dart';
+import '../constants/constants.dart' as constants;
+import '../constants/strings.dart' as strings;
+import '../genre.dart';
+import '../genres_repository.dart';
 import '../movie.dart';
 import 'genres_list.dart';
 import 'movie_actions.dart';
@@ -18,70 +24,86 @@ class MovieCard extends StatefulWidget {
 }
 
 class _MovieCardState extends State<MovieCard> {
-  int _counter = 0;
-  static const double appBarElevation = 0;
+  late final Future<List<Genre>> genresList =
+      GenresRepository().getFromIds(widget.movie.genres);
 
   void _incrementCounter() {
     setState(
       () {
-        _counter++;
+        widget.movie.incrementVoteCount();
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    var image = 'assets/images/${widget.movie.backdrop}.jpg';
-
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        elevation: appBarElevation,
-        backgroundColor: Colors.transparent,
-        leading: BackButton(
-          onPressed: () {
-            //go back
-          },
-        ),
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image(
-                  image: AssetImage(
-                    image,
-                  ),
-                ),
-                MovieHeader(
-                  title: widget.movie.title,
-                  originalTitle: widget.movie.originalTitle,
-                ),
-                MovieActions(
-                  movie: widget.movie,
-                  counter: _counter,
-                ),
-                GenresList(
-                  genresList: widget.movie.genres,
-                ),
-                MovieOverview(
-                  overview: widget.movie.overview,
-                ),
-              ],
-            ),
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
+          elevation: constants.appBarElevation,
+          backgroundColor: Colors.transparent,
+          leading: BackButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _incrementCounter();
-        },
-        child: const Icon(
-          Icons.thumb_up_alt_sharp,
+        ),
+        body: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CachedImage(
+                    imageUrl: widget.movie.backdrop,
+                  ),
+                  MovieHeader(
+                    title: widget.movie.title,
+                    originalTitle: widget.movie.originalTitle,
+                  ),
+                  MovieActions(
+                    movie: widget.movie,
+                  ),
+                  FutureBuilder(
+                    future: genresList,
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<List<Genre>> snapshot,
+                    ) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: SizedBox(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        var genres = snapshot.data as List<Genre>;
+                        return GenresList(
+                          genresList: genres,
+                        );
+                      }
+                      return const Text(strings.noDataErrorText);
+                    },
+                  ),
+                  MovieOverview(
+                    overview: widget.movie.overview,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _incrementCounter();
+          },
+          child: const Icon(
+            Icons.thumb_up_alt_sharp,
+          ),
         ),
       ),
     );

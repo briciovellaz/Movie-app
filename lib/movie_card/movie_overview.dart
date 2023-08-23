@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import '../constants/constants.dart' as constants;
 
 class MovieOverview extends StatelessWidget {
   final String overview;
   static const String title = 'Overview';
-  static const double titlePadding = 10;
-  static const double bodyVerticalPadding = 10;
+  static const double bodyVerticalPadding = 55;
   static const double bodyHorizontalPadding = 20;
   static const int mainOverviewContainerFlex = 3;
   static const int overviewBodyFlex = 3;
@@ -22,7 +22,7 @@ class MovieOverview extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: const EdgeInsets.all(titlePadding),
+            padding: const EdgeInsets.all(constants.mainPadding),
             alignment: Alignment.centerLeft,
             child: Text(
               title,
@@ -32,9 +32,9 @@ class MovieOverview extends StatelessWidget {
           Expanded(
             flex: overviewBodyFlex,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: bodyVerticalPadding,
-                horizontal: bodyHorizontalPadding,
+              padding: const EdgeInsets.only(
+                bottom: bodyVerticalPadding,
+                left: bodyHorizontalPadding,
               ),
               child: Text(
                 overview,

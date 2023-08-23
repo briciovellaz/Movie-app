@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
+
+import '../constants/constants.dart' as constants;
 import '../movie.dart';
-import 'movie_play_trailer_button.dart';
 import 'movie_like_counter.dart';
+import 'movie_play_trailer_button.dart';
 import 'movie_secondary_button.dart';
 
 class MovieActions extends StatelessWidget {
   const MovieActions({
     super.key,
     required this.movie,
-    required this.counter,
   });
 
   final Movie movie;
-  final int counter;
   static const int counterFlex = 1;
   static const int buttonsBarFlex = 3;
   static const int mainActionFlex = 3;
-  static const double mainActionPadding = 10;
   static const double avgVotesFontSize = 12;
-  static const double releaseDateFontSize=15;
+  static const double releaseDateFontSize = 15;
   static const String averageRatingPrefix = 'Avg. vote: ';
 
   @override
   Widget build(BuildContext context) {
-    final String averageRating = movie.voteAverage;
+    final String averageRating = movie.voteAverage.toString();
     return Column(
       children: [
         Row(
@@ -31,7 +30,7 @@ class MovieActions extends StatelessWidget {
             const Expanded(
               flex: mainActionFlex,
               child: Padding(
-                padding: EdgeInsets.all(mainActionPadding),
+                padding: EdgeInsets.all(constants.mainPadding),
                 child: PlayTrailerButton(),
               ),
             ),
@@ -73,7 +72,7 @@ class MovieActions extends StatelessWidget {
               child: Column(
                 children: [
                   LikeCounter(
-                    counter: counter,
+                    counter: movie.voteCount,
                   ),
                   Text(
                     '$averageRatingPrefix$averageRating',

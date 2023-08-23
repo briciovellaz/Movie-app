@@ -2,7 +2,7 @@
 class Assets {
   Assets._();
 
-  static const String imagesMarioBackdrop = 'assets/images/mario_backdrop.jpg';
-  static const String imagesMarioPoster = 'assets/images/mario_poster.jpg';
+  static const String dataGenres = 'assets/data/genres.json';
+  static const String dataMovies = 'assets/data/movies.json';
 
 }

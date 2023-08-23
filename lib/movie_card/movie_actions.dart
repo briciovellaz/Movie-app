@@ -18,6 +18,7 @@ class MovieActions extends StatelessWidget {
   static const int mainActionFlex = 3;
   static const double mainActionPadding = 10;
   static const double avgVotesFontSize = 12;
+  static const double releaseDateFontSize=15;
   static const String averageRatingPrefix = 'Avg. vote: ';
 
   @override
@@ -46,6 +47,7 @@ class MovieActions extends StatelessWidget {
                     movie.releaseDate,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onBackground,
+                      fontSize: releaseDateFontSize,
                     ),
                   ),
                 ],

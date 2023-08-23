@@ -23,7 +23,7 @@ class MovieOverview extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(titlePadding),
-            alignment: Alignment.bottomLeft,
+            alignment: Alignment.centerLeft,
             child: Text(
               title,
               style: Theme.of(context).textTheme.titleSmall,
@@ -36,11 +36,9 @@ class MovieOverview extends StatelessWidget {
                 vertical: bodyVerticalPadding,
                 horizontal: bodyHorizontalPadding,
               ),
-              child: SingleChildScrollView(
-                child: Text(
-                  overview,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
+              child: Text(
+                overview,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
           ),

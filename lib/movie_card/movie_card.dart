@@ -45,31 +45,36 @@ class _MovieCardState extends State<MovieCard> {
           },
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-              image: AssetImage(
-                image,
-              ),
+      body: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image(
+                  image: AssetImage(
+                    image,
+                  ),
+                ),
+                MovieHeader(
+                  title: widget.movie.title,
+                  originalTitle: widget.movie.originalTitle,
+                ),
+                MovieActions(
+                  movie: widget.movie,
+                  counter: _counter,
+                ),
+                GenresList(
+                  genresList: widget.movie.genres,
+                ),
+                MovieOverview(
+                  overview: widget.movie.overview,
+                ),
+              ],
             ),
-            MovieHeader(
-              title: widget.movie.title,
-              originalTitle: widget.movie.originalTitle,
-            ),
-            MovieActions(
-              movie: widget.movie,
-              counter: _counter,
-            ),
-            GenresList(
-              genresList: widget.movie.genres,
-            ),
-            MovieOverview(
-              overview: widget.movie.overview,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

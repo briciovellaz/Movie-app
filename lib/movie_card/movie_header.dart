@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../constants/constants.dart' as constants;
+
 class MovieHeader extends StatelessWidget {
   final String title;
   final String originalTitle;
   static const double titleTopPadding = 15;
-  static const double titleSidePadding = 10;
 
   const MovieHeader({
     super.key,
@@ -15,10 +16,17 @@ class MovieHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: constants.mainGradientColors,
+        ),
+      ),
       padding: const EdgeInsets.only(
         top: titleTopPadding,
-        right: titleSidePadding,
-        left: titleSidePadding,
+        right: constants.mainPadding,
+        left: constants.mainPadding,
       ),
       alignment: Alignment.center,
       child: Column(

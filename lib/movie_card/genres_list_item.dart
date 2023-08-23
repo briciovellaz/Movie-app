@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../genre.dart';
 
 class GenreListItem extends StatelessWidget {
   const GenreListItem({
@@ -9,7 +10,7 @@ class GenreListItem extends StatelessWidget {
   static const double borderRadius = 18;
   static const double horizontalButtonPadding = 3;
 
-  final String genre;
+  final Genre genre;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class GenreListItem extends StatelessWidget {
           ),
         ),
         child: Text(
-          genre,
+          genre.name,
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ),

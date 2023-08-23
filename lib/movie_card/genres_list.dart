@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../genre.dart';
 import 'genres_list_item.dart';
 
 class GenresList extends StatelessWidget {
@@ -9,7 +9,7 @@ class GenresList extends StatelessWidget {
   static const double genresListVerticalPadding = 20;
   static const double genresListHorizontalPadding = 10;
   static const double genresListHeight = 25;
-  final List<String> genresList;
+  final List<Genre> genresList;
 
   const GenresList({
     super.key,

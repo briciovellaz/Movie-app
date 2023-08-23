@@ -1,0 +1,9 @@
+const String appName = 'Movie App';
+const String noDataErrorText = 'Not available.';
+const String imageUrlPrefix = 'https://image.tmdb.org/t/p/w500/';
+const String exitAppText = 'Are you sure you want to exit the app?';
+const String searchFieldText = 'Search a movie';
+const String emptyString = '';
+const String yesString = 'Yes';
+const String negationString = 'No';
+const String noMatchingSearch = 'No matching results';

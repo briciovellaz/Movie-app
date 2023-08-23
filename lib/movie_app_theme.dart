@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 ThemeData movieAppData() {
+  const Color backgroundColor = Color.fromRGBO(30, 30, 30, 1.0);
   const Color mainColor = Colors.white;
-  const Color secondaryColor = Colors.white70;
+  const Color secondaryColor = Color.fromRGBO(190, 190, 190, 1.0);
+  const Color tertiaryColor = Color.fromRGBO(120, 120, 120, 1.0);
   const Color floatingButtonBgColor = Colors.red;
   const double titleBigFontSize = 25;
   const double titleMediumFontSize = 20;
@@ -15,18 +17,17 @@ ThemeData movieAppData() {
     colorScheme: const ColorScheme(
       primary: Colors.red,
       secondary: secondaryColor,
-      tertiary: secondaryColor,
-      brightness: Brightness.light,
+      tertiary: tertiaryColor,
+      brightness: Brightness.dark,
       onPrimary: mainColor,
       onSecondary: mainColor,
       error: Colors.red,
       onError: Colors.black,
       onBackground: mainColor,
-      background: Colors.black87,
-      surface: Colors.black87,
+      background: backgroundColor,
+      surface: backgroundColor,
       onSurface: secondaryColor,
     ),
-    brightness: Brightness.light,
     textTheme: const TextTheme(
       titleLarge: TextStyle(
         color: mainColor,
@@ -56,3 +57,4 @@ ThemeData movieAppData() {
     ),
   );
 }
+

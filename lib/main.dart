@@ -1,5 +1,6 @@
-import 'package:bricio_vellaz/home.dart';
 import 'package:flutter/material.dart';
+
+import 'loading_screen.dart';
 import 'movie_app_theme.dart';
 
 void main() {
@@ -13,11 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: movieAppData(),
-      home: const Scaffold(
-        body: SafeArea(
-          child: Home(),
-        ),
-      ),
+      home: const LoadingScreen(),
     );
   }
 }

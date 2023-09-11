@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'loading_screen.dart';
-import 'movie_app_theme.dart';
+import 'src/config/themes/movie_app_theme.dart';
+import 'src/presentation/view/loading_screen.dart';
 
 void main() {
   runApp(const MyApp());

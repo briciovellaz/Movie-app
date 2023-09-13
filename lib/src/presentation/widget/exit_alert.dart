@@ -5,7 +5,7 @@ import '../../core/util/strings.dart' as strings;
 class ExitAlert extends StatelessWidget {
   const ExitAlert({super.key});
 
-  static const String alertTitle='Exit';
+  static const String alertTitle = 'Exit';
 
   @override
   Widget build(BuildContext context) {

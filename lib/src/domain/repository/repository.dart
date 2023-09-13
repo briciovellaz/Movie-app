@@ -1,4 +1,4 @@
 abstract class IRepository<T> {
   Future<void> fetchData();
-  Future<List<T>> getAll();
+  Future<T> getAll();
 }

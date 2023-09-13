@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/util/constants.dart' as constants;
+import '../custom_gradient.dart';
 
 class MovieHeader extends StatelessWidget {
   final String title;
@@ -16,12 +17,8 @@ class MovieHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: constants.mainGradientColors,
-        ),
+      decoration: BoxDecoration(
+        gradient: customGradient(),
       ),
       padding: const EdgeInsets.only(
         top: titleTopPadding,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'src/core/util/strings.dart' as strings;
+import 'src/data/datasource/local/movie_database.dart';
+import 'src/data/repository/database_movie_repository.dart';
 import 'src/data/repository/movie_repository.dart';
 import 'src/data/repository/themes_repository.dart';
 import 'src/domain/usecase/implementation/get_movies_usecase.dart';
@@ -33,11 +35,17 @@ class _MyAppState extends State<MyApp> {
     _initializeBLoCs();
   }
 
-  void _loadDependencies() {
-    MovieRepository movieRepository = MovieRepository();
+  void _loadDependencies() async {
+    final MovieRepository movieRepository = MovieRepository();
+    final MovieDatabase database= await $FloorMovieDatabase.databaseBuilder(strings.databaseName).build();
+    MovieDatabaseRepository databaseRepository =
+        MovieDatabaseRepository(database);
     Get.put<MoviesBloc>(
       MoviesBloc(
-        usecase: GetMoviesUseCase(repository: movieRepository),
+        usecase: GetMoviesUseCase(
+          remoteRepository: movieRepository,
+          databaseRepository: databaseRepository,
+        ),
       ),
     );
   }
@@ -58,6 +66,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       theme: themes[strings.lightThemeName],
       darkTheme: themes[strings.darkThemeName],
+      themeMode: ThemeMode.system,
       home: const Home(),
     );
   }

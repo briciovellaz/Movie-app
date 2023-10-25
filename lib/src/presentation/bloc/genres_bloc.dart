@@ -4,7 +4,7 @@ import '../../domain/usecase/genres_usecase_interface.dart';
 import '../../domain/usecase/implementation/fetch_genres_usecase.dart';
 
 class GenresBloc implements IBloc {
-  final GenresUseCase usecase = FetchGenresUsecase(repository: GenresRepository());
+  final GenresUseCase usecase = FetchGenresUsecase(remoteRepository: GenresRepository());
 
   @override
   void dispose() {}

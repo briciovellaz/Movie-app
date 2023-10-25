@@ -4,5 +4,6 @@ class Assets {
 
   static const String dataGenres = 'assets/data/genres.json';
   static const String dataMovies = 'assets/data/movies.json';
+  static const String dataThemes = 'assets/data/themes.json';
 
 }

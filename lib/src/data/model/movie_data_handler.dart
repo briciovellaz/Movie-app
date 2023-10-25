@@ -1,4 +1,3 @@
-
 import '../../core/util/strings.dart' as strings;
 
 import '../../domain/entity/movie.dart';
@@ -14,7 +13,7 @@ class MovieDataHandler {
   final List<int> genres;
   final String originalLanguage;
   final String releaseDate;
-  final num voteAverage;
+  final String voteAverage;
   final String overview;
   final String backdrop;
   final String poster;
@@ -54,7 +53,7 @@ class MovieDataHandler {
       releaseDate: json['release_date'],
       title: json['title'],
       video: json['video'],
-      voteAverage: json['vote_average'],
+      voteAverage: json['vote_average'].toStringAsFixed(1),
       voteCount: json['vote_count'],
     );
   }
@@ -102,7 +101,7 @@ class MovieDataHandler {
       releaseDate: releaseDate,
       title: title,
       video: video,
-      voteAverage: voteAverage,
+      voteAverage: double.parse(voteAverage),
       voteCount: voteCount,
     );
   }

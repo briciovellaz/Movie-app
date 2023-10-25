@@ -34,4 +34,13 @@ class Movie {
     required this.voteAverage,
     required this.voteCount,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      other is Movie &&
+          other.runtimeType == runtimeType &&
+          other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

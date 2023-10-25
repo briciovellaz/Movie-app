@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 
-import '../../../config/routes/movie_card_route.dart';
+import '../../../config/routes/animated_route.dart';
 import '../../../domain/entity/movie.dart';
+import '../../view/movie_card.dart';
 import '../cached_image.dart';
 
 class MovieTile extends StatelessWidget {
@@ -30,7 +30,7 @@ class MovieTile extends StatelessWidget {
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
-                movieCardRoute(movie),
+                animatedRoute(MovieCard(movie: movie)),
               );
             },
             child: CachedImage(

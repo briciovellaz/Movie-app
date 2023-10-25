@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../domain/entity/movie_category.dart';
-import 'home_page_movies_list.dart';
+import '../horizontal_movies_list.dart';
 
 class CategoriesList extends StatelessWidget {
   const CategoriesList({
@@ -16,8 +16,7 @@ class CategoriesList extends StatelessWidget {
       children: [
         for (var category in categories)
           MoviesList(
-            movies: category.movies,
-            movieListTitle: category.name,
+            category: category,
           ),
       ],
     );

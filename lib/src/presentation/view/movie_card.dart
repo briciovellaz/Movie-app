@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../core/parameter/movie_parameters.dart';
 import '../../core/util/constants.dart' as constants;
+import '../../core/util/enums.dart';
 import '../../core/util/strings.dart' as strings;
-import '../../data/repository/genres_repository.dart';
+import '../../domain/entity/event/implementation/genre_event.dart';
+import '../../domain/entity/event/implementation/movie_event.dart';
 import '../../domain/entity/genre.dart';
 import '../../domain/entity/movie.dart';
+import '../../domain/entity/movie_category.dart';
+import '../bloc/genres_by_id_bloc.dart';
+import '../bloc/movies_bloc.dart';
 import '../widget/cached_image.dart';
+import '../widget/horizontal_movies_list.dart';
 import '../widget/movie_card/genres_list.dart';
 import '../widget/movie_card/movie_actions.dart';
 import '../widget/movie_card/movie_header.dart';
@@ -13,6 +21,7 @@ import '../widget/movie_card/movie_overview.dart';
 
 class MovieCard extends StatefulWidget {
   final Movie movie;
+  final Endpoint recommendedMoviesEndpoint = Endpoint.recommended;
 
   const MovieCard({
     super.key,
@@ -24,8 +33,26 @@ class MovieCard extends StatefulWidget {
 }
 
 class _MovieCardState extends State<MovieCard> {
-  late final Future<List<Genre>> genresList =
-      GenresRepository().getFromIds(widget.movie.genres);
+  final MoviesBloc bloc = Get.find();
+  final GenresByIdBloc genresBloc = GenresByIdBloc();
+  static const int mainOverviewContainerFlex = 3;
+
+  @override
+  void initState() {
+    bloc.fetchMovies(
+      params: MovieParameters(),
+      id: widget.movie.id,
+      endpoint: widget.recommendedMoviesEndpoint,
+    );
+    genresBloc.fetchGenres(widget.movie.genres);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    genresBloc.dispose();
+    super.dispose();
+  }
 
   void _incrementCounter() {
     setState(
@@ -45,6 +72,7 @@ class _MovieCardState extends State<MovieCard> {
           elevation: constants.appBarElevation,
           backgroundColor: Colors.transparent,
           leading: BackButton(
+            color: Theme.of(context).colorScheme.onPrimary,
             onPressed: () {
               Navigator.pop(context);
             },
@@ -67,30 +95,72 @@ class _MovieCardState extends State<MovieCard> {
                   MovieActions(
                     movie: widget.movie,
                   ),
-                  FutureBuilder(
-                    future: genresList,
+                  StreamBuilder<GenreEvent>(
+                    stream: genresBloc.genres,
+                    initialData: GenreEvent.loading(),
                     builder: (
                       BuildContext context,
-                      AsyncSnapshot<List<Genre>> snapshot,
+                      AsyncSnapshot<GenreEvent> snapshot,
                     ) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: SizedBox(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      if (snapshot.hasData) {
-                        var genres = snapshot.data as List<Genre>;
-                        return GenresList(
-                          genresList: genres,
-                        );
+                      switch (snapshot.data?.state) {
+                        case ElementState.success:
+                          var genres = snapshot.data?.data as List<Genre>;
+                          return GenresList(
+                            genresList: genres,
+                          );
+                        case ElementState.empty:
+                          return const Text(strings.noDataErrorText);
+                        case ElementState.failure:
+                          return const Text(strings.apiErrorMessage);
+                        case ElementState.loading:
+                          return const Center(
+                            child: SizedBox(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        default:
                       }
                       return const Text(strings.noDataErrorText);
                     },
                   ),
-                  MovieOverview(
-                    overview: widget.movie.overview,
+                  Expanded(
+                    key: const Key('movieOverview'),
+                    flex: mainOverviewContainerFlex,
+                    child: MovieOverview(
+                      overview: widget.movie.overview,
+                    ),
+                  ),
+                  StreamBuilder<MovieEvent>(
+                    initialData: MovieEvent.loading(),
+                    stream: bloc.recommendedMovies,
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<MovieEvent> snapshot,
+                    ) {
+                      switch (snapshot.data?.state) {
+                        case ElementState.success:
+                          var recommendedMovies =
+                              snapshot.data?.data as List<Movie>;
+                          return MoviesList(
+                            category: MovieCategory(
+                              movies: recommendedMovies,
+                              name: widget.recommendedMoviesEndpoint.title,
+                            ),
+                          );
+                        case ElementState.empty:
+                          return const Text(strings.noDataErrorText);
+                        case ElementState.failure:
+                          return const Text(strings.apiErrorMessage);
+                        case ElementState.loading:
+                          return const Center(
+                            child: SizedBox(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        default:
+                      }
+                      return const Text(strings.noDataErrorText);
+                    },
                   ),
                 ],
               ),

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../core/util/constants.dart' as constants;
 import '../../core/util/strings.dart' as strings;
+import '../../data/repository/themes_repository.dart';
+import '../widget/custom_gradient.dart';
 import '../widget/exit_alert.dart';
 import 'saved_page.dart';
 import 'search_page.dart';
 import 'view_page.dart';
+
+//TODO Make home button scroll to top if already in this view
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,6 +21,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   static const int initialIndex = 0;
+  static const double drawerOpacity = 0.5;
+  static const double drawerHeaderHeight = 100;
   late int _selectedIndex;
   late List<Widget> _pages;
   late PageController _pageController;
@@ -25,7 +32,7 @@ class _HomeState extends State<Home> {
     super.initState();
     _selectedIndex = initialIndex;
     _pages = [
-      const ViewPage(),
+      ViewPage(),
       const SearchPage(),
       const SavedPage(),
     ];
@@ -67,20 +74,70 @@ class _HomeState extends State<Home> {
           backgroundColor: Theme.of(context).colorScheme.background,
           extendBodyBehindAppBar: _selectedIndex == initialIndex,
           appBar: AppBar(
-            title: const Text(
+            title: Text(
               strings.appName,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             centerTitle: true,
             elevation: constants.appBarElevation,
             backgroundColor: Colors.transparent,
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: constants.mainGradientColors,
-                ),
+              decoration: BoxDecoration(
+                gradient: customGradient(),
               ),
+            ),
+          ),
+          drawer: Drawer(
+            backgroundColor:
+                Theme.of(context).colorScheme.background.withOpacity(drawerOpacity),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: drawerHeaderHeight,
+                  width: double.maxFinite,
+                  child: DrawerHeader(
+                    padding: EdgeInsets.zero,
+                    child: Container(
+                      color: Theme.of(context).colorScheme.background,
+                      child: Center(
+                        child: Text(
+                          strings.appName,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                const Divider(),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: constants.mainPadding),
+                  alignment: Alignment.bottomCenter,
+                  color: Theme.of(context).colorScheme.background,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(constants.mainPadding),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(strings.switchThemeText, style: Theme.of(context).textTheme.titleMedium,),
+                          Switch.adaptive(
+                            activeColor: ThemesRepository.themes[strings.darkThemeName]!.colorScheme.primary,
+                            inactiveThumbColor: ThemesRepository.themes[strings.lightThemeName]!.colorScheme.primary,
+                            value: Get.isDarkMode,
+                            onChanged: (value) {
+                              Get.changeThemeMode(
+                                Get.isDarkMode ? ThemeMode.light : ThemeMode.dark,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           body: PageView(

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../config/routes/animated_route.dart';
 import '../../../domain/entity/genre.dart';
+import '../../view/genre_movie_list.dart';
+import 'genres_list.dart';
 
 class GenreListItem extends StatelessWidget {
   const GenreListItem({
@@ -19,7 +22,12 @@ class GenreListItem extends StatelessWidget {
         horizontal: horizontalButtonPadding,
       ),
       child: OutlinedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            animatedRoute(GenreList(genre: genre)),
+          );
+        },
         style: OutlinedButton.styleFrom(
           side: BorderSide(
             color: Theme.of(context).colorScheme.secondary,

@@ -6,7 +6,6 @@ class MovieOverview extends StatelessWidget {
   static const String title = 'Overview';
   static const double bodyVerticalPadding = 55;
   static const double bodyHorizontalPadding = 20;
-  static const int mainOverviewContainerFlex = 3;
   static const int overviewBodyFlex = 3;
 
   const MovieOverview({
@@ -16,8 +15,8 @@ class MovieOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: mainOverviewContainerFlex,
+    return Directionality(
+      textDirection: TextDirection.ltr,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -35,6 +34,7 @@ class MovieOverview extends StatelessWidget {
               padding: const EdgeInsets.only(
                 bottom: bodyVerticalPadding,
                 left: bodyHorizontalPadding,
+                right: bodyHorizontalPadding,
               ),
               child: Text(
                 overview,

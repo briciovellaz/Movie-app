@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../core/parameter/movie_parameters.dart';
 import '../../core/util/constants.dart' as constants;
+import '../../core/util/debouncer.dart';
+import '../../core/util/enums.dart';
 import '../../core/util/strings.dart' as strings;
-import '../../data/repository/movie_repository.dart';
+import '../../domain/entity/event/implementation/movie_event.dart';
 import '../../domain/entity/movie.dart';
+import '../bloc/movies_bloc.dart';
+import '../widget/search_page/no_match.dart';
 import '../widget/search_page/searched_list.dart';
 
 class SearchPage extends StatefulWidget {
@@ -21,7 +27,33 @@ class _SearchPageState extends State<SearchPage>
   bool get wantKeepAlive => true;
   String toSearch = strings.emptyString;
   final _controller = TextEditingController();
-  late final movies = MovieRepository().getAll();
+  final MoviesBloc bloc = Get.find();
+  final Debouncer debouncer = Debouncer(
+    delay: const Duration(milliseconds: 500),
+  );
+
+  void _onSearchChanged(String query) {
+    debouncer.call(
+      () {
+        setState(
+          () {
+            bloc.initialize();
+            toSearch = query;
+            bloc.fetchMovies(
+              endpoint: Endpoint.search,
+              params: MovieParameters.search(query: toSearch),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    debouncer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,39 +85,53 @@ class _SearchPageState extends State<SearchPage>
                 suffixIconColor: Theme.of(context).colorScheme.primary,
               ),
               onChanged: (content) {
-                setState(() {
-                  toSearch = content;
-                });
+                _onSearchChanged(content);
               },
               onTapOutside: (event) {
                 FocusManager.instance.primaryFocus?.unfocus();
               },
             ),
-            Expanded(
-              child: FutureBuilder(
-                future: movies,
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<List<Movie>> snapshot,
-                ) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.hasData) {
-                    var movies = snapshot.data as List<Movie>;
-                    return ListView(
-                      children: [
-                        SearchedList(
-                          movies: movies,
-                          toSearch: toSearch,
-                        ),
-                      ],
-                    );
-                  }
-                  return const Text(strings.noDataErrorText);
-                },
+            if (toSearch.isEmpty)
+              const Expanded(
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(strings.emptySearch),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            if (toSearch.isNotEmpty)
+              Expanded(
+                child: StreamBuilder<MovieEvent>(
+                  initialData: MovieEvent.loading(),
+                  stream: bloc.filteredMovies,
+                  builder: (
+                    BuildContext context,
+                    AsyncSnapshot<MovieEvent> snapshot,
+                  ) {
+                    switch (snapshot.data?.state) {
+                      case ElementState.success:
+                        var movies = snapshot.data?.data as List<Movie>;
+                        return ListView(
+                          children: [
+                            SearchedList(
+                              movies: movies,
+                            ),
+                          ],
+                        );
+                      case ElementState.empty:
+                        return const Text(strings.noDataErrorText);
+                      case ElementState.failure:
+                        return Text(snapshot.data!.error!);
+                      case ElementState.loading:
+                        return const Center(child: CircularProgressIndicator());
+                      default:
+                    }
+                    return const NoMatchAlert();
+                  },
+                ),
+              ),
           ],
         ),
       ),

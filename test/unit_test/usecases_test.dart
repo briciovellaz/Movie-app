@@ -2,6 +2,7 @@ import 'package:bricio_vellaz/src/core/parameter/fetch_movies_parameters.dart';
 import 'package:bricio_vellaz/src/core/parameter/movie_parameters.dart';
 import 'package:bricio_vellaz/src/core/util/data_state.dart';
 import 'package:bricio_vellaz/src/core/util/enums.dart';
+import 'package:bricio_vellaz/src/data/repository/database_movie_repository.dart';
 import 'package:bricio_vellaz/src/data/repository/genres_repository.dart';
 import 'package:bricio_vellaz/src/data/repository/movie_repository.dart';
 import 'package:bricio_vellaz/src/domain/entity/genre.dart';
@@ -15,9 +16,12 @@ class MockMovieRepository extends Mock implements MovieRepository {}
 
 class MockGenreRepository extends Mock implements GenresRepository {}
 
+class MockDBRepository extends Mock implements MovieDatabaseRepository {}
+
 void main() {
   late MockMovieRepository mockMovieRepo;
   late MockGenreRepository mockGenreRepo;
+  late MockDBRepository mockDBRepository;
 
   Future<DataState<List<Movie>>> mockFutureMovieSuccess =
       Future(() => DataSuccess<List<Movie>>([]));
@@ -35,9 +39,14 @@ void main() {
     () {
       mockMovieRepo = MockMovieRepository();
       mockGenreRepo = MockGenreRepository();
+      mockDBRepository = MockDBRepository();
 
-      getMoviesUseCase = GetMoviesUseCase(repository: mockMovieRepo);
-      genresByIdUsecase = GetGenresByIdUsecase(repository: mockGenreRepo);
+      getMoviesUseCase = GetMoviesUseCase(
+        remoteRepository: mockMovieRepo,
+        databaseRepository: mockDBRepository,
+      );
+      genresByIdUsecase =
+          GetGenresByIdUsecase(databaseRepository: mockDBRepository);
 
       registerFallbackValue(MovieParameters());
       registerFallbackValue(Endpoint.popular);

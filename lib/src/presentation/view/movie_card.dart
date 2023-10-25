@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/parameter/movie_parameters.dart';
 import '../../core/util/constants.dart' as constants;
@@ -33,26 +33,9 @@ class MovieCard extends StatefulWidget {
 }
 
 class _MovieCardState extends State<MovieCard> {
-  final MoviesBloc bloc = Get.find();
-  final GenresByIdBloc genresBloc = GenresByIdBloc();
+  late final MoviesBloc bloc;
+  late final GenresByIdBloc genresBloc;
   static const int mainOverviewContainerFlex = 3;
-
-  @override
-  void initState() {
-    bloc.fetchMovies(
-      params: MovieParameters(),
-      id: widget.movie.id,
-      endpoint: widget.recommendedMoviesEndpoint,
-    );
-    genresBloc.fetchGenres(widget.movie.genres);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    genresBloc.dispose();
-    super.dispose();
-  }
 
   void _incrementCounter() {
     setState(
@@ -64,6 +47,14 @@ class _MovieCardState extends State<MovieCard> {
 
   @override
   Widget build(BuildContext context) {
+    bloc = Provider.of<MoviesBloc>(context);
+    genresBloc = Provider.of<GenresByIdBloc>(context);
+    bloc.fetchMovies(
+      params: MovieParameters(),
+      id: widget.movie.id,
+      endpoint: widget.recommendedMoviesEndpoint,
+    );
+    genresBloc.fetchGenres(widget.movie.genres);
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,

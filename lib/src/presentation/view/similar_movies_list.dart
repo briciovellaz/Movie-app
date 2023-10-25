@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/parameter/movie_parameters.dart';
 import '../../core/util/enums.dart';
@@ -21,20 +21,17 @@ class SimilarMoviesList extends StatefulWidget {
 }
 
 class _SimilarMoviesListState extends State<SimilarMoviesList> {
-  final MoviesBloc bloc = Get.find();
+  late final MoviesBloc bloc;
+
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
+    bloc = Provider.of<MoviesBloc>(context);
     bloc.fetchMovies(
       params: MovieParameters(),
       id: widget.id,
       endpoint: widget.similarEndpoint,
     );
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return StreamBuilder<MovieEvent>(
       stream: bloc.similarMovies,
       initialData: MovieEvent.loading(),

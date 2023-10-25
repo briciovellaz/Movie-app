@@ -1,4 +1,5 @@
 const String appName = 'Movie App';
+const String databaseName = 'movie_database.db';
 const String noDataErrorText = 'Not available.';
 const String exitAppText = 'Are you sure you want to exit the app?';
 const String searchFieldText = 'Search a movie';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../config/routes/animated_route.dart';
 import '../../../domain/entity/genre.dart';
 import '../../view/genre_movie_list.dart';
-import 'genres_list.dart';
 
 class GenreListItem extends StatelessWidget {
   const GenreListItem({

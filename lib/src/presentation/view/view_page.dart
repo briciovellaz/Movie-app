@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/parameter/movie_parameters.dart';
 import '../../core/util/enums.dart';
@@ -25,11 +25,12 @@ class _ViewPageState extends State<ViewPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  final MoviesBloc bloc = Get.find();
+  late MoviesBloc bloc;
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    super.build(context);
+    bloc = Provider.of<MoviesBloc>(context);
     bloc.fetchMovies(
       params: widget.defaultParameters,
       endpoint: widget.mainEndpoint,
@@ -45,17 +46,6 @@ class _ViewPageState extends State<ViewPage>
         endpoint: endpoint,
       );
     }
-  }
-
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
 
     return ListView(
       children: [

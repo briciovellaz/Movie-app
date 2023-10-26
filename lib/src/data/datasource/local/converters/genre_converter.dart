@@ -6,16 +6,14 @@ class GenreConverter extends TypeConverter<List<int>, String>{
 
   @override
   List<int> decode(String databaseValue) {
-    List<int> result=[];
     final data = jsonDecode(databaseValue);
-    result = List<int>.from(data['genres_id']);
-    return result;
+    return List<int>.from(data['genres_id']);
   }
 
   @override
   encode(List<int> value) {
     final data = <String, dynamic>{};
-    data.addAll({'genres_id': value.join(',')});
+    data.addAll({'genres_id': value});
     return jsonEncode(data);
   }
   

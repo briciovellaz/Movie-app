@@ -6,6 +6,10 @@ import '../entity/movie.dart';
 abstract class IDatabaseMovieRepository {
   Future<List<Movie>> getMovies();
 
+  Future<List<Movie>> getMoviesByTitle(String title);
+
+  Future<List<Movie>> getRelatedMovies(int id, String relation);
+
   Future<List<Movie>> getMoviesByCategory(String category);
 
   Future<Movie?> getMovieById(int id);

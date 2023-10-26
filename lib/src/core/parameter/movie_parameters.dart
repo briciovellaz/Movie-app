@@ -37,7 +37,7 @@ class MovieParameters extends IApiParameters
     String? region,
     String? releaseYear,
     String? year,
-    String? genre,
+    int? genre,
     this.searchQuery,
   }) {
     this.page = page;
@@ -83,7 +83,7 @@ class MovieParameters extends IApiParameters
   }
 
   factory MovieParameters.discover({
-    String? genre,
+    int? genre,
     int? page,
     bool? adult,
     String? language,

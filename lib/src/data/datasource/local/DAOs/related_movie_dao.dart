@@ -7,6 +7,6 @@ abstract class RelatedMovieDAO {
   @delete
   Future<void> deleteRelation(RelatedMovie relation);
 
-  @insert
+  @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertRelation(RelatedMovie relation);
 }

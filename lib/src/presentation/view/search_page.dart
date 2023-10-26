@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/parameter/movie_parameters.dart';
 import '../../core/util/constants.dart' as constants;
@@ -27,7 +27,7 @@ class _SearchPageState extends State<SearchPage>
   bool get wantKeepAlive => true;
   String toSearch = strings.emptyString;
   final _controller = TextEditingController();
-  final MoviesBloc bloc = Get.find();
+  late MoviesBloc bloc;
   final Debouncer debouncer = Debouncer(
     delay: const Duration(milliseconds: 500),
   );
@@ -37,7 +37,6 @@ class _SearchPageState extends State<SearchPage>
       () {
         setState(
           () {
-            bloc.initialize();
             toSearch = query;
             bloc.fetchMovies(
               endpoint: Endpoint.search,
@@ -58,6 +57,7 @@ class _SearchPageState extends State<SearchPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    bloc = Provider.of<MoviesBloc>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.background,

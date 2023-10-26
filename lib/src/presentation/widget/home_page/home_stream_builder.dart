@@ -32,6 +32,7 @@ class _HomeStreamBuilderState extends State<HomeStreamBuilder>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return StreamBuilder<MovieEvent>(
       initialData: MovieEvent.loading(),
       stream: widget.stream,

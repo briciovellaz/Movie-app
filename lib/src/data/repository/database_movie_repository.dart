@@ -23,7 +23,7 @@ class MovieDatabaseRepository implements IDatabaseMovieRepository {
 
   @override
   Future<List<Movie>> getMovieByGenre(int id) =>
-      _movieDB.movieDAO.getMoviesByGenre(id);
+      _movieDB.movieDAO.getMoviesByGenre('%$id%');
 
   @override
   Future<void> removeMovie({required Movie movie}) async =>
@@ -57,4 +57,12 @@ class MovieDatabaseRepository implements IDatabaseMovieRepository {
   @override
   Future<void> removeMovieCategory(MovieCategory category) =>
       _movieDB.movieCategoryDAO.deleteMovieCategory(category);
+
+  @override
+  Future<List<Movie>> getMoviesByTitle(String title) =>
+      _movieDB.movieDAO.getMoviesByTitle('%$title%');
+
+  @override
+  Future<List<Movie>> getRelatedMovies(int id, String relation) =>
+      _movieDB.movieDAO.getRelatedMovies(id, relation);
 }

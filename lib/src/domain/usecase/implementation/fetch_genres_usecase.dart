@@ -1,3 +1,5 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+
 import '../../../core/util/data_state.dart';
 import '../../../core/util/enums.dart';
 import '../../../data/repository/database_movie_repository.dart';
@@ -16,12 +18,15 @@ class FetchGenresUsecase implements GenresUseCase<void, void> {
 
   @override
   Future<void> call({void params}) async {
-    await remoteRepository.fetchData();
-    DataState<List<Genre>> data = await remoteRepository.getAll();
-    if (data.state == ElementState.success) {
-      if (remoteRepository.hasGenres()) {
-        for (var genre in data.data!) {
-          databaseRepository.saveGenre(genre);
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult != ConnectivityResult.none){
+      await remoteRepository.fetchData();
+      DataState<List<Genre>> data = await remoteRepository.getAll();
+      if (data.state == ElementState.success) {
+        if (remoteRepository.hasGenres()) {
+          for (var genre in data.data!) {
+            databaseRepository.saveGenre(genre);
+          }
         }
       }
     }

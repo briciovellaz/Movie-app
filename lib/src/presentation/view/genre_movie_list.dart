@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/parameter/movie_parameters.dart';
 import '../../core/util/enums.dart';
@@ -24,19 +24,15 @@ class GenreList extends StatefulWidget {
 }
 
 class _GenreListState extends State<GenreList> {
-  final MoviesBloc bloc = Get.find();
-
-  @override
-  void initState() {
-    super.initState();
-    bloc.fetchMovies(
-      params: MovieParameters.discover(genre: widget.genre.id.toString()),
-      endpoint: Endpoint.discover,
-    );
-  }
+  late final MoviesBloc bloc;
 
   @override
   Widget build(BuildContext context) {
+    bloc = Provider.of<MoviesBloc>(context);
+    bloc.fetchMovies(
+      params: MovieParameters.discover(genre: widget.genre.id),
+      endpoint: Endpoint.discover,
+    );
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

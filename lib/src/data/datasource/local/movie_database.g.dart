@@ -186,7 +186,7 @@ class _$MovieDAO extends MovieDAO {
   @override
   Future<List<Movie>> getMoviesByCategory(String category) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM movies INNER JOIN movie_category ON movies.id = movie_category.movie_id WHERE movie_category.name = ?1',
+        'SELECT * FROM movies WHERE id IN (SELECT movie_id FROM movie_category WHERE category = ?1)',
         mapper: (Map<String, Object?> row) => Movie(adult: (row['adult'] as int) != 0, backdrop: row['backdrop'] as String, genres: _genreConverter.decode(row['genres'] as String), id: row['id'] as int, originalLanguage: row['original_language'] as String, originalTitle: row['original_title'] as String, overview: row['overview'] as String, popularity: row['popularity'] as double, poster: row['poster'] as String, releaseDate: row['release_date'] as String, title: row['title'] as String, video: (row['video'] as int) != 0, voteAverage: row['vote_average'] as double, voteCount: row['voteCount'] as int),
         arguments: [category]);
   }
@@ -213,7 +213,18 @@ class _$MovieDAO extends MovieDAO {
   }
 
   @override
-  Future<List<Movie>> getMoviesByGenre(int genre) async {
+  Future<List<Movie>> getRelatedMovies(
+    int id,
+    String relation,
+  ) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM movies WHERE id IN (SELECT related_movie_id FROM related_movies WHERE movie_id = ?1 AND relation = ?2)',
+        mapper: (Map<String, Object?> row) => Movie(adult: (row['adult'] as int) != 0, backdrop: row['backdrop'] as String, genres: _genreConverter.decode(row['genres'] as String), id: row['id'] as int, originalLanguage: row['original_language'] as String, originalTitle: row['original_title'] as String, overview: row['overview'] as String, popularity: row['popularity'] as double, poster: row['poster'] as String, releaseDate: row['release_date'] as String, title: row['title'] as String, video: (row['video'] as int) != 0, voteAverage: row['vote_average'] as double, voteCount: row['voteCount'] as int),
+        arguments: [id, relation]);
+  }
+
+  @override
+  Future<List<Movie>> getMoviesByGenre(String genre) async {
     return _queryAdapter.queryList('SELECT * FROM movies WHERE genres LIKE ?1',
         mapper: (Map<String, Object?> row) => Movie(
             adult: (row['adult'] as int) != 0,
@@ -231,6 +242,27 @@ class _$MovieDAO extends MovieDAO {
             voteAverage: row['vote_average'] as double,
             voteCount: row['voteCount'] as int),
         arguments: [genre]);
+  }
+
+  @override
+  Future<List<Movie>> getMoviesByTitle(String title) async {
+    return _queryAdapter.queryList('SELECT * FROM movies WHERE title LIKE ?1',
+        mapper: (Map<String, Object?> row) => Movie(
+            adult: (row['adult'] as int) != 0,
+            backdrop: row['backdrop'] as String,
+            genres: _genreConverter.decode(row['genres'] as String),
+            id: row['id'] as int,
+            originalLanguage: row['original_language'] as String,
+            originalTitle: row['original_title'] as String,
+            overview: row['overview'] as String,
+            popularity: row['popularity'] as double,
+            poster: row['poster'] as String,
+            releaseDate: row['release_date'] as String,
+            title: row['title'] as String,
+            video: (row['video'] as int) != 0,
+            voteAverage: row['vote_average'] as double,
+            voteCount: row['voteCount'] as int),
+        arguments: [title]);
   }
 
   @override
@@ -301,7 +333,7 @@ class _$GenreDAO extends GenreDAO {
 
   @override
   Future<void> insertGenre(Genre genre) async {
-    await _genreInsertionAdapter.insert(genre, OnConflictStrategy.abort);
+    await _genreInsertionAdapter.insert(genre, OnConflictStrategy.replace);
   }
 
   @override
@@ -383,7 +415,7 @@ class _$RelatedMovieDAO extends RelatedMovieDAO {
   @override
   Future<void> insertRelation(RelatedMovie relation) async {
     await _relatedMovieInsertionAdapter.insert(
-        relation, OnConflictStrategy.abort);
+        relation, OnConflictStrategy.replace);
   }
 
   @override

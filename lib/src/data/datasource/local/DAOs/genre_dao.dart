@@ -5,7 +5,7 @@ import '../../../../domain/entity/genre.dart';
 @dao
 abstract class GenreDAO {
 
-  @insert
+  @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertGenre(Genre genre);
 
   @Query('SELECT * FROM genres WHERE id = :id')

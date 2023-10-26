@@ -10,7 +10,7 @@ import '../../domain/usecase/genres_usecase_interface.dart';
 
 class GenresByIdBloc implements IBloc {
   late final GenresUseCase usecase;
-  final _genres = StreamController<GenreEvent>();
+  final _genres = StreamController<GenreEvent>.broadcast();
 
   Stream<GenreEvent> get genres => _genres.stream;
 

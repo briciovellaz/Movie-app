@@ -4,7 +4,6 @@ import '../../config/routes/animated_route.dart';
 import '../../core/util/constants.dart' as constants;
 import '../../domain/entity/movie_category.dart';
 import '../view/expanded_movie_list.dart';
-import '../view/genre_movie_list.dart';
 import 'home_page/home_page_movie_tile.dart';
 import 'show_all_button.dart';
 

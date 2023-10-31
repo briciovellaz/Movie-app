@@ -117,6 +117,7 @@ class _SearchPageState extends State<SearchPage>
                           children: [
                             VerticalMoviesList(
                               movies: movies,
+                              physics: const NeverScrollableScrollPhysics(),
                             ),
                           ],
                         );

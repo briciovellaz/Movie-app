@@ -155,15 +155,15 @@ class _MovieActionsState extends State<MovieActions> {
                     },
                   ),
                   SecondaryButton(
-                    icon: savedIcon,
-                    onPressed: () {
-                      _toggleIcons(Endpoint.watchlist);
-                    },
-                  ),
-                  SecondaryButton(
                     icon: starIcon,
                     onPressed: () {
                       _toggleIcons(Endpoint.favorites);
+                    },
+                  ),
+                  SecondaryButton(
+                    icon: savedIcon,
+                    onPressed: () {
+                      _toggleIcons(Endpoint.watchlist);
                     },
                   ),
                 ],

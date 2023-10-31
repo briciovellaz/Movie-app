@@ -8,10 +8,39 @@ import 'src/core/util/strings.dart' as strings;
 import 'src/data/repository/themes_repository.dart';
 import 'src/presentation/view/home.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
-const AndroidInitializationSettings androidInitializationSettings =
-AndroidInitializationSettings('app_icon');
+class LocalPushNotification {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  Future<void> initNotifications() async {
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('app_icon');
+    InitializationSettings initializationSettings =
+        const InitializationSettings(android: androidInitializationSettings);
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveBackgroundNotificationResponse:
+          (NotificationResponse notificationResponse) {},
+      onDidReceiveNotificationResponse: (NotificationResponse details) {},
+    );
+  }
+
+  Future<void> showNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payload,
+  }) async {
+    await flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      const NotificationDetails(),
+    );
+  }
+}
+
 final Dependencies dependencies = Dependencies();
 
 void main() async {

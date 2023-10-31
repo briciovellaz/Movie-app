@@ -24,6 +24,8 @@ class SavedMoviesStreamBuilder extends StatefulWidget {
 
 class _SavedMoviesStreamBuilderState extends State<SavedMoviesStreamBuilder> {
 
+  String? emptyMessage;
+
   @override
   Widget build(BuildContext context) {
     MoviesBloc bloc = Provider.of<MoviesBloc>(context);
@@ -34,9 +36,11 @@ class _SavedMoviesStreamBuilderState extends State<SavedMoviesStreamBuilder> {
     late final Stream<MovieEvent> stream;
     switch (widget.endpoint) {
       case Endpoint.favorites:
+        emptyMessage = 'No favorites movies';
         stream = bloc.favoritesMovies;
         break;
       case Endpoint.watchlist:
+        emptyMessage = 'No movies in watchlist';
         stream = bloc.watchlist;
         break;
       default:
@@ -52,7 +56,7 @@ class _SavedMoviesStreamBuilderState extends State<SavedMoviesStreamBuilder> {
               var snapshotData = snapshot.data?.data as List<Movie>;
               return VerticalMoviesList(movies: snapshotData);
             case ElementState.empty:
-              return const Center(child: Text('No movies to show'));
+              return Center(child: Text(emptyMessage!));
             case ElementState.failure:
               return Text(snapshot.data!.error!);
             case ElementState.loading:

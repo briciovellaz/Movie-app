@@ -3,7 +3,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../../core/parameter/fetch_movies_parameters.dart';
 import '../../../core/util/data_state.dart';
 import '../../../core/util/enums.dart';
-import '../../../core/util/strings.dart';
 import '../../../data/repository/movie_repository.dart';
 import '../../entity/database/movie_category.dart';
 import '../../entity/database/related_movie.dart';
@@ -30,7 +29,7 @@ class GetMoviesUseCase
         params.endpoint == Endpoint.favorites) {
       List<Movie> data =
           await databaseRepository.getMoviesByCategory(params.endpoint.title);
-      return (data.isEmpty) ? DataFailed('No movies to show.') : DataSuccess(data);
+      return DataSuccess(data);
     }
 
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -88,6 +87,6 @@ class GetMoviesUseCase
         data =
             await databaseRepository.getMoviesByCategory(params.endpoint.title);
     }
-    return (data.isEmpty) ? DataFailed(noDataErrorText) : DataSuccess(data);
+    return DataSuccess(data);
   }
 }

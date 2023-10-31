@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entity/movie.dart';
-import '../detailed_list_item.dart';
+import '../../domain/entity/movie.dart';
+import 'detailed_list_item.dart';
 
-class SearchedList extends StatelessWidget {
+class VerticalMoviesList extends StatelessWidget {
   final List<Movie> movies;
 
-  const SearchedList({
+  const VerticalMoviesList({
     super.key,
     required this.movies,
   });
@@ -15,7 +15,6 @@ class SearchedList extends StatelessWidget {
   Widget build(BuildContext context) {
       return ListView.builder(
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         itemCount: movies.length,
         itemBuilder: (
           BuildContext context,

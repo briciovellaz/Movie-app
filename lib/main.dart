@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -7,9 +8,14 @@ import 'src/core/util/strings.dart' as strings;
 import 'src/data/repository/themes_repository.dart';
 import 'src/presentation/view/home.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+const AndroidInitializationSettings androidInitializationSettings =
+AndroidInitializationSettings('app_icon');
+final Dependencies dependencies = Dependencies();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final Dependencies dependencies = Dependencies();
   await dependencies.load();
   await dependencies.initialize();
   runApp(
@@ -17,6 +23,7 @@ void main() async {
       providers: [
         Provider(create: (_) => dependencies.moviesBloc),
         Provider(create: (_) => dependencies.genresByIdBloc),
+        Provider(create: (_) => dependencies.savedMoviesBloc),
       ],
       child: MyApp(),
     ),
@@ -35,16 +42,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late Map<String, ThemeData> themes = widget.themesRepository.getAll();
 
-
   @override
   void initState() {
     super.initState();
     widget.themesRepository.fetchData();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override

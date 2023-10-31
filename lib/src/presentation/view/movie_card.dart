@@ -33,7 +33,6 @@ class MovieCard extends StatefulWidget {
 }
 
 class _MovieCardState extends State<MovieCard> {
-  late final MoviesBloc bloc;
   late final GenresByIdBloc genresBloc;
   static const int mainOverviewContainerFlex = 3;
 
@@ -47,7 +46,7 @@ class _MovieCardState extends State<MovieCard> {
 
   @override
   Widget build(BuildContext context) {
-    bloc = Provider.of<MoviesBloc>(context);
+    final MoviesBloc bloc = Provider.of<MoviesBloc>(context);
     genresBloc = Provider.of<GenresByIdBloc>(context);
     bloc.fetchMovies(
       params: MovieParameters(),

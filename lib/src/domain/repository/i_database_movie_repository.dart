@@ -33,4 +33,6 @@ abstract class IDatabaseMovieRepository {
   Future<void> saveMovieCategory(MovieCategory category);
 
   Future<void> removeMovieCategory(MovieCategory category);
+
+  Future<bool> existsCategory(MovieCategory category);
 }

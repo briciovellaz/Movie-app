@@ -14,7 +14,7 @@ class MovieDatabaseRepository implements IDatabaseMovieRepository {
   Future<List<Movie>> getMovies() => _movieDB.movieDAO.getAllMovies();
 
   @override
-  Future<Movie?> getMovieById(int id) async =>
+  Future<Movie?> getMovieById(int id) =>
       _movieDB.movieDAO.getMovieById(id);
 
   @override
@@ -26,11 +26,11 @@ class MovieDatabaseRepository implements IDatabaseMovieRepository {
       _movieDB.movieDAO.getMoviesByGenre('%$id%');
 
   @override
-  Future<void> removeMovie({required Movie movie}) async =>
+  Future<void> removeMovie({required Movie movie}) =>
       _movieDB.movieDAO.deleteMovie(movie);
 
   @override
-  Future<void> saveMovie({required Movie movie}) async =>
+  Future<void> saveMovie({required Movie movie}) =>
       _movieDB.movieDAO.insertMovie(movie);
 
   @override
@@ -65,4 +65,14 @@ class MovieDatabaseRepository implements IDatabaseMovieRepository {
   @override
   Future<List<Movie>> getRelatedMovies(int id, String relation) =>
       _movieDB.movieDAO.getRelatedMovies(id, relation);
+
+  @override
+  Future<bool> existsCategory(MovieCategory category) async {
+    var result = await _movieDB.movieCategoryDAO.existsCategory(
+          category.movieId,
+          category.category,
+        ) ==
+        1;
+    return result;
+  }
 }

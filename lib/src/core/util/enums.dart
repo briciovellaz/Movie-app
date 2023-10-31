@@ -16,6 +16,14 @@ enum Endpoint {
     'Popular',
     '/popular',
   ),
+  favorites(
+    'Favorites',
+    '',
+  ),
+  watchlist(
+    'Watchlist',
+    '',
+  ),
   topRated(
     'Top rated',
     '/top_rated',

@@ -26,6 +26,6 @@ abstract class MovieDAO {
   @delete
   Future<void> deleteMovie(Movie movie);
 
-  @Insert(onConflict: OnConflictStrategy.replace)
+  @Insert(onConflict: OnConflictStrategy.ignore)
   Future<void> insertMovie(Movie movie);
 }

@@ -10,7 +10,7 @@ import '../../domain/entity/event/implementation/movie_event.dart';
 import '../../domain/entity/movie.dart';
 import '../bloc/movies_bloc.dart';
 import '../widget/search_page/no_match.dart';
-import '../widget/search_page/searched_list.dart';
+import '../widget/vertical_movies_list.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({
@@ -115,7 +115,7 @@ class _SearchPageState extends State<SearchPage>
                         var movies = snapshot.data?.data as List<Movie>;
                         return ListView(
                           children: [
-                            SearchedList(
+                            VerticalMoviesList(
                               movies: movies,
                             ),
                           ],

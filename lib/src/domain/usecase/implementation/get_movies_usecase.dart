@@ -26,11 +26,18 @@ class GetMoviesUseCase
   Future<DataState<List<Movie>>> call({
     FetchMovieParameters? params,
   }) async {
+    if (params!.endpoint == Endpoint.watchlist ||
+        params.endpoint == Endpoint.favorites) {
+      List<Movie> data =
+          await databaseRepository.getMoviesByCategory(params.endpoint.title);
+      return (data.isEmpty) ? DataFailed('No movies to show.') : DataSuccess(data);
+    }
+
     var connectivityResult = await (Connectivity().checkConnectivity());
 
     if (connectivityResult != ConnectivityResult.none) {
       final DataState<List<Movie>> data = await remoteRepository.getMovies(
-        params: params!.params,
+        params: params.params,
         endpoint: params.endpoint,
         id: params.id,
       );
@@ -63,7 +70,7 @@ class GetMoviesUseCase
 
     final List<Movie> data;
 
-    switch (params!.endpoint) {
+    switch (params.endpoint) {
       case Endpoint.search:
         data = await databaseRepository
             .getMoviesByTitle(params.params.searchQuery!);

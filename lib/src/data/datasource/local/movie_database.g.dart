@@ -287,7 +287,7 @@ class _$MovieDAO extends MovieDAO {
 
   @override
   Future<void> insertMovie(Movie movie) async {
-    await _movieInsertionAdapter.insert(movie, OnConflictStrategy.replace);
+    await _movieInsertionAdapter.insert(movie, OnConflictStrategy.ignore);
   }
 
   @override
@@ -346,7 +346,8 @@ class _$MovieCategoryDAO extends MovieCategoryDAO {
   _$MovieCategoryDAO(
     this.database,
     this.changeListener,
-  )   : _movieCategoryInsertionAdapter = InsertionAdapter(
+  )   : _queryAdapter = QueryAdapter(database),
+        _movieCategoryInsertionAdapter = InsertionAdapter(
             database,
             'movie_category',
             (MovieCategory item) => <String, Object?>{
@@ -366,14 +367,27 @@ class _$MovieCategoryDAO extends MovieCategoryDAO {
 
   final StreamController<String> changeListener;
 
+  final QueryAdapter _queryAdapter;
+
   final InsertionAdapter<MovieCategory> _movieCategoryInsertionAdapter;
 
   final DeletionAdapter<MovieCategory> _movieCategoryDeletionAdapter;
 
   @override
+  Future<int?> existsCategory(
+    int id,
+    String category,
+  ) async {
+    return _queryAdapter.query(
+        'SELECT COUNT(*) FROM movie_category WHERE movie_id = ?1 AND category = ?2',
+        mapper: (Map<String, Object?> row) => row.values.first as int,
+        arguments: [id, category]);
+  }
+
+  @override
   Future<void> insertMovieCategory(MovieCategory category) async {
     await _movieCategoryInsertionAdapter.insert(
-        category, OnConflictStrategy.replace);
+        category, OnConflictStrategy.ignore);
   }
 
   @override
@@ -415,7 +429,7 @@ class _$RelatedMovieDAO extends RelatedMovieDAO {
   @override
   Future<void> insertRelation(RelatedMovie relation) async {
     await _relatedMovieInsertionAdapter.insert(
-        relation, OnConflictStrategy.replace);
+        relation, OnConflictStrategy.ignore);
   }
 
   @override

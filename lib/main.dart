@@ -1,16 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
+import 'src/core/util/dependencies.dart';
 import 'src/core/util/strings.dart' as strings;
-import 'src/data/repository/movie_repository.dart';
 import 'src/data/repository/themes_repository.dart';
-import 'src/domain/usecase/implementation/get_movies_usecase.dart';
-import 'src/presentation/bloc/genres_bloc.dart';
-import 'src/presentation/bloc/movies_bloc.dart';
 import 'src/presentation/view/home.dart';
 
-void main() {
-  runApp(MyApp());
+class LocalPushNotification {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  Future<void> initNotifications() async {
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('app_icon');
+    InitializationSettings initializationSettings =
+        const InitializationSettings(android: androidInitializationSettings);
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveBackgroundNotificationResponse:
+          (NotificationResponse notificationResponse) {},
+      onDidReceiveNotificationResponse: (NotificationResponse details) {},
+    );
+  }
+
+  Future<void> showNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payload,
+  }) async {
+    await flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      const NotificationDetails(),
+    );
+  }
+}
+
+final Dependencies dependencies = Dependencies();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dependencies.load();
+  await dependencies.initialize();
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider(create: (_) => dependencies.moviesBloc),
+        Provider(create: (_) => dependencies.genresByIdBloc),
+        Provider(create: (_) => dependencies.savedMoviesBloc),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -29,28 +75,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     widget.themesRepository.fetchData();
-    _loadDependencies();
-    _initializeBLoCs();
-  }
-
-  void _loadDependencies() {
-    MovieRepository movieRepository = MovieRepository();
-    Get.put<MoviesBloc>(
-      MoviesBloc(
-        usecase: GetMoviesUseCase(repository: movieRepository),
-      ),
-    );
-  }
-
-  void _initializeBLoCs() {
-    GenresBloc().initialize();
-    Get.find<MoviesBloc>().initialize();
-  }
-
-  @override
-  void dispose() {
-    Get.find<MoviesBloc>().dispose();
-    super.dispose();
   }
 
   @override
@@ -58,6 +82,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       theme: themes[strings.lightThemeName],
       darkTheme: themes[strings.darkThemeName],
+      themeMode: ThemeMode.system,
       home: const Home(),
     );
   }

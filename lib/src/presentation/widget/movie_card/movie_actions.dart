@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../config/routes/animated_route.dart';
 import '../../../core/util/constants.dart' as constants;
+import '../../../core/util/enums.dart';
 import '../../../domain/entity/movie.dart';
+import '../../bloc/saved_movies_bloc.dart';
 import '../../view/similar_movies_list.dart';
 import 'movie_like_counter.dart';
 import 'movie_play_trailer_button.dart';
@@ -27,33 +30,41 @@ class MovieActions extends StatefulWidget {
 }
 
 class _MovieActionsState extends State<MovieActions> {
-  static IconData savedIcon = Icons.bookmark_border;
-  static IconData starIcon = Icons.star_border;
+  IconData savedIcon = Icons.bookmark_border;
+  IconData starIcon = Icons.star_border;
+  late SavedMoviesBloc bloc;
   late String snackBarText;
   late SnackBar snackBar;
+  late bool inFavorites;
+  late bool inWatchlist;
 
-  void _toggleSaved() {
-    setState(() {
-      (savedIcon == Icons.bookmark_border)
-          ? {savedIcon = Icons.bookmark, snackBarText = 'Saved to watchlist.'}
-          : {
-              savedIcon = Icons.bookmark_border,
-              snackBarText = 'Removed from watchlist.',
-            };
-    });
-    _updateSnackBar();
-  }
+  void _toggleIcons(Endpoint endpoint) async {
+    bloc.updateSaved(
+      widget.movie.id,
+      endpoint.title,
+    );
 
-  void _toggleStar() {
-    setState(() {
-      (starIcon == Icons.star_border)
-          ? {starIcon = Icons.star, snackBarText = 'Saved to favorites.'}
-          : {
-              starIcon = Icons.star_border,
-              snackBarText = 'Removed from favorites.',
-            };
-    });
+    if (endpoint == Endpoint.watchlist) {
+      inWatchlist = await bloc.isSaved(
+        widget.movie.id,
+        Endpoint.watchlist.title,
+      );
+      (inWatchlist)
+          ? snackBarText = 'Removed from Watchlist'
+          : snackBarText = 'Saved to Watchlist.';
+    } else {
+      inFavorites = await bloc.isSaved(
+        widget.movie.id,
+        Endpoint.favorites.title,
+      );
+      (inFavorites)
+          ? snackBarText = 'Removed from Favorites'
+          : snackBarText = 'Saved in Favorites.';
+    }
+
+    _setIcons();
     _updateSnackBar();
+    _showSnackBar();
   }
 
   void _updateSnackBar() {
@@ -68,8 +79,33 @@ class _MovieActionsState extends State<MovieActions> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  void _setIcons() async {
+    inFavorites = await bloc.isSaved(
+      widget.movie.id,
+      Endpoint.favorites.title,
+    );
+    inWatchlist = await bloc.isSaved(
+      widget.movie.id,
+      Endpoint.watchlist.title,
+    );
+
+    setState(() {
+      (inFavorites) ? starIcon = Icons.star : starIcon = Icons.star_border;
+      (inWatchlist)
+          ? savedIcon = Icons.bookmark
+          : savedIcon = Icons.bookmark_border;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    bloc = Provider.of<SavedMoviesBloc>(context);
+    _setIcons();
     final String averageRating = widget.movie.voteAverage.toString();
     return Column(
       children: [
@@ -119,17 +155,15 @@ class _MovieActionsState extends State<MovieActions> {
                     },
                   ),
                   SecondaryButton(
-                    icon: savedIcon,
+                    icon: starIcon,
                     onPressed: () {
-                      _toggleSaved();
-                      _showSnackBar();
+                      _toggleIcons(Endpoint.favorites);
                     },
                   ),
                   SecondaryButton(
-                    icon: starIcon,
+                    icon: savedIcon,
                     onPressed: () {
-                      _toggleStar();
-                      _showSnackBar();
+                      _toggleIcons(Endpoint.watchlist);
                     },
                   ),
                 ],

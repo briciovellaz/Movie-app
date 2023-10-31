@@ -1,6 +1,6 @@
 import 'package:bricio_vellaz/src/domain/entity/movie.dart';
 import 'package:bricio_vellaz/src/presentation/widget/detailed_list_item.dart';
-import 'package:bricio_vellaz/src/presentation/widget/search_page/searched_list.dart';
+import 'package:bricio_vellaz/src/presentation/widget/vertical_movies_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,7 +20,7 @@ void main() {
         Material(
           child: Directionality(
             textDirection: TextDirection.ltr,
-            child: SearchedList(movies: mockSearch),
+            child: VerticalMoviesList(movies: mockSearch),
           ),
         ),
       );

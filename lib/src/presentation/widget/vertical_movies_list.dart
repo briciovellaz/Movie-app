@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entity/movie.dart';
-import '../detailed_list_item.dart';
+import '../../domain/entity/movie.dart';
+import 'detailed_list_item.dart';
 
-class SearchedList extends StatelessWidget {
+class VerticalMoviesList extends StatelessWidget {
   final List<Movie> movies;
+  final ScrollPhysics? physics;
 
-  const SearchedList({
+  const VerticalMoviesList({
     super.key,
     required this.movies,
+    this.physics,
   });
 
   @override
   Widget build(BuildContext context) {
       return ListView.builder(
+        physics: physics ?? const AlwaysScrollableScrollPhysics(),
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         itemCount: movies.length,
         itemBuilder: (
           BuildContext context,

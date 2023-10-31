@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/parameter/movie_parameters.dart';
 import '../../core/util/constants.dart' as constants;
@@ -10,7 +10,7 @@ import '../../domain/entity/event/implementation/movie_event.dart';
 import '../../domain/entity/movie.dart';
 import '../bloc/movies_bloc.dart';
 import '../widget/search_page/no_match.dart';
-import '../widget/search_page/searched_list.dart';
+import '../widget/vertical_movies_list.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({
@@ -27,7 +27,7 @@ class _SearchPageState extends State<SearchPage>
   bool get wantKeepAlive => true;
   String toSearch = strings.emptyString;
   final _controller = TextEditingController();
-  final MoviesBloc bloc = Get.find();
+  late MoviesBloc bloc;
   final Debouncer debouncer = Debouncer(
     delay: const Duration(milliseconds: 500),
   );
@@ -37,7 +37,6 @@ class _SearchPageState extends State<SearchPage>
       () {
         setState(
           () {
-            bloc.initialize();
             toSearch = query;
             bloc.fetchMovies(
               endpoint: Endpoint.search,
@@ -58,6 +57,7 @@ class _SearchPageState extends State<SearchPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    bloc = Provider.of<MoviesBloc>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -115,8 +115,9 @@ class _SearchPageState extends State<SearchPage>
                         var movies = snapshot.data?.data as List<Movie>;
                         return ListView(
                           children: [
-                            SearchedList(
+                            VerticalMoviesList(
                               movies: movies,
+                              physics: const NeverScrollableScrollPhysics(),
                             ),
                           ],
                         );

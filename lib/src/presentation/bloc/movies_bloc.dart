@@ -22,25 +22,21 @@ class MoviesBloc implements IMoviesBloc<MovieParameters> {
   final _similarMoviesController = StreamController<MovieEvent>.broadcast();
   final _searchedMoviesController = StreamController<MovieEvent>.broadcast();
   final _moviesByGenreController = StreamController<MovieEvent>.broadcast();
+  final _favoritesMoviesController = StreamController<MovieEvent>.broadcast();
+  final _watchlistController = StreamController<MovieEvent>.broadcast();
 
   Stream<MovieEvent> get nowPlayingStream => _nowPlayingController.stream;
-
   Stream<MovieEvent> get upcomingStream => _upcomingController.stream;
-
   Stream<MovieEvent> get popularStream => _popularController.stream;
-
   Stream<MovieEvent> get topRatedStream => _topRatedController.stream;
-
   Stream<MovieEvent> get auxiliaryStream => _auxiliaryController.stream;
-
   Stream<MovieEvent> get recommendedMovies =>
       _recommendedMoviesController.stream;
-
   Stream<MovieEvent> get similarMovies => _similarMoviesController.stream;
-
   Stream<MovieEvent> get filteredMovies => _searchedMoviesController.stream;
-
   Stream<MovieEvent> get moviesByGenre => _moviesByGenreController.stream;
+  Stream<MovieEvent> get favoritesMovies => _favoritesMoviesController.stream;
+  Stream<MovieEvent> get watchlist => _watchlistController.stream;
 
   Stream<MovieEvent> getStreamFromEndpoint({required Endpoint endpoint}) {
     late Stream<MovieEvent> result;
@@ -117,6 +113,12 @@ class MoviesBloc implements IMoviesBloc<MovieParameters> {
       case Endpoint.discover:
         controller = _moviesByGenreController;
         break;
+      case Endpoint.favorites:
+        controller = _favoritesMoviesController;
+        break;
+      case Endpoint.watchlist:
+        controller = _watchlistController;
+        break;
     }
     _sendEventToController(
       dataState: await usecase.call(
@@ -155,5 +157,7 @@ class MoviesBloc implements IMoviesBloc<MovieParameters> {
     _similarMoviesController.close();
     _searchedMoviesController.close();
     _moviesByGenreController.close();
+    _watchlistController.close();
+    _favoritesMoviesController.close();
   }
 }
